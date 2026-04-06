@@ -1,0 +1,32 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.12, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/py-utils/venvs/pytest/bin/python
+cachedir: .pytest_cache
+rootdir: /workspaces/skills-getting-started-with-github-copilot
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 22 items
+
+tests/test_endpoints.py::TestGetActivities::test_get_all_activities_success PASSED [  4%]
+tests/test_endpoints.py::TestGetActivities::test_get_activities_returns_correct_structure PASSED [  9%]
+tests/test_endpoints.py::TestGetActivities::test_get_activities_with_participants PASSED [ 13%]
+tests/test_endpoints.py::TestRootRedirect::test_root_redirects_to_static_index PASSED [ 18%]
+tests/test_endpoints.py::TestRootRedirect::test_root_redirect_follows PASSED [ 22%]
+tests/test_error_handling.py::TestParameterValidation::test_signup_invalid_email_format_not_enforced PASSED [ 27%]
+tests/test_error_handling.py::TestEdgeCases::test_activity_name_with_special_characters PASSED [ 31%]
+tests/test_error_handling.py::TestEdgeCases::test_email_with_special_characters PASSED [ 36%]
+tests/test_error_handling.py::TestEdgeCases::test_consecutive_signup_and_unregister PASSED [ 40%]
+tests/test_error_handling.py::TestEdgeCases::test_multiple_signup_and_unregister_sequence PASSED [ 45%]
+tests/test_signup.py::TestSignupSuccess::test_signup_new_student_success PASSED [ 50%]
+tests/test_signup.py::TestSignupSuccess::test_signup_empty_activity_gets_first_participant PASSED [ 54%]
+tests/test_signup.py::TestSignupDuplicate::test_duplicate_signup_rejected PASSED [ 59%]
+tests/test_signup.py::TestSignupDuplicate::test_participant_count_unchanged_on_duplicate PASSED [ 63%]
+tests/test_signup.py::TestSignupErrors::test_signup_activity_not_found PASSED [ 68%]
+tests/test_signup.py::TestSignupErrors::test_signup_with_missing_email_param PASSED [ 72%]
+tests/test_unregister.py::TestUnregisterSuccess::test_unregister_signed_up_student_success PASSED [ 77%]
+tests/test_unregister.py::TestUnregisterSuccess::test_participant_count_decreases PASSED [ 81%]
+tests/test_unregister.py::TestUnregisterErrors::test_unregister_not_signed_up PASSED [ 86%]
+tests/test_unregister.py::TestUnregisterErrors::test_unregister_from_empty_activity PASSED [ 90%]
+tests/test_unregister.py::TestUnregisterErrors::test_unregister_activity_not_found PASSED [ 95%]
+tests/test_unregister.py::TestUnregisterErrors::test_unregister_with_missing_email_param PASSED [100%]
+
+============================== 22 passed in 0.20s ==============================
