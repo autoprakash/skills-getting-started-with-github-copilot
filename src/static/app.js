@@ -3,15 +3,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const activitySelect = document.getElementById("activity");
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
+  let activitiesData = {}; // Store activities data for availability check
 
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
       const response = await fetch("/activities");
       const activities = await response.json();
+      activitiesData = activities; // Store the activities data
 
       // Clear loading message
       activitiesList.innerHTML = "";
+
+      // Clear existing options except the first one
+      while (activitySelect.options.length > 1) {
+        activitySelect.remove(1);
+      }
 
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
@@ -21,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
 
         const participantsHtml = details.participants.length > 0
-          ? `<ul class="participants-list">${details.participants.map(email => `<li><span>${email}</span><button class="delete-btn" data-activity="${name}" data-email="${email}" title="Remove participant">✕</button></li>`).join("")}</ul>`
+          ? `<ul class="participants-list">${details.participants.map(email => `<li><span>${email}</span><button class="delete-btn" data-activity="${name}" data-email="${email}" title="Remove participant">🗑</button></li>`).join("")}</ul>`
           : `<p class="no-participants">No participants yet</p>`;
 
         activityCard.innerHTML = `
@@ -55,11 +62,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Function to check availability and update button state
+  function checkActivityAvailability() {
+    const selectedActivity = activitySelect.value;
+    const submitBtn = signupForm.querySelector("button[type='submit']");
+    
+    if (selectedActivity && activitiesData[selectedActivity]) {
+      const activity = activitiesData[selectedActivity];
+      const spotsLeft = activity.max_participants - activity.participants.length;
+      
+      if (spotsLeft <= 0) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = "0.5";
+        submitBtn.style.cursor = "not-allowed";
+        submitBtn.title = "Slot closed, Kindly wait for future openings";
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+        submitBtn.style.cursor = "pointer";
+        submitBtn.title = "";
+      }
+    }
+  }
+
+  // Event listener for activity selection
+  activitySelect.addEventListener("change", checkActivityAvailability);
+
   // Handle delete participant
   async function handleDeleteParticipant(event) {
     event.preventDefault();
     const activity = event.target.getAttribute("data-activity");
     const email = event.target.getAttribute("data-email");
+
+    // Show confirmation dialog
+    if (!window.confirm(`Are you sure you want to remove ${email} from ${activity}?`)) {
+      return; // Cancel the deletion operation
+    }
 
     try {
       const response = await fetch(
@@ -76,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Refresh activities list
         fetchActivities();
+        checkActivityAvailability();
         
         setTimeout(() => {
           messageDiv.classList.add("hidden");
@@ -119,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Refresh activities list to show updated participants
         fetchActivities();
+        checkActivityAvailability();
         
         // Hide message after 5 seconds
         setTimeout(() => {
@@ -144,4 +184,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize app
   fetchActivities();
+  checkActivityAvailability();
 });
