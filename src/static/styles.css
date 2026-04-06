@@ -109,7 +109,7 @@ section h3 {
 
 .activity-card .delete-btn {
   background-color: transparent;
-  color: #8b0000;
+  color: #ff9800;
   border: none;
   padding: 4px 8px;
   font-size: 24px;
@@ -121,7 +121,7 @@ section h3 {
 
 .activity-card .delete-btn:hover {
   background-color: #ffebee;
-  color: #660000;
+  color: #e65100;
 }
 
 .no-participants {
