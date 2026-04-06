@@ -33,5 +33,19 @@
 
 ---
 
+## MailHog Startup
+
+To launch MailHog locally, run:
+
+```bash
+./start-mailhog.sh
+```
+
+Then open the MailHog UI at:
+
+- `http://localhost:8025`
+
+---
+
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 
